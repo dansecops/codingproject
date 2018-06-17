@@ -1,8 +1,8 @@
+package mrbeans;
+
 import com.datastax.driver.mapping.annotations.Column;
 import com.datastax.driver.mapping.annotations.PartitionKey;
 import com.datastax.driver.mapping.annotations.Table;
-
-import java.util.Set;
 
 /*
 *
@@ -26,10 +26,29 @@ public class DBUser {
     private String userid;
 
     @Column
-    private Set<String> emails;
+    //TODO: use hash to store password
+    private String password;
 
-    public DBUser(String userid, Set<String> emails) {
+    @Column
+    private String email;
+
+
+    public DBUser() {
+    }
+
+    public DBUser(String userid) {
         this.userid = userid;
-        this.emails = emails;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUserid() {
+        return userid;
     }
 }
