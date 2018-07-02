@@ -1,7 +1,9 @@
+package service;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import mrbeans.DBUser;
-import mrbeans.ViewUser;
+import model.DBUser;
+import model.ViewUser;
 import org.apache.commons.io.IOUtils;
 import persistence.UserPersistence;
 

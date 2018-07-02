@@ -1,60 +1,44 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-public class PlainSockets {
+public class PlainSockets2 {
 
-    private static final Logger LOG = Logger.getLogger(PlainSockets.class.getName());
 
-    public static final String HTML = "<html><head>Hello from plain socket</head><body>Hi Hi<body></html>\r\n";
-    public static final String[] RSP_LINES = new String[]{
-            "HTTP/1.1 200 OK\r\n",
-            "Content-Type: text/html;\r\n",
-            "\r\n",
-            HTML
-    };
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         int port = 8080;
 
-        try {
-            ServerSocket srvSocket = new ServerSocket(port);
+        ServerSocket srvSocket = new ServerSocket(port);
 
-            while(!Thread.currentThread().isInterrupted()) {
-                LOG.info("Listening for connection on port " + port);
-                Socket clientSocket = srvSocket.accept();
-
-                OutputStream outputStream = clientSocket.getOutputStream();
-                InputStream inputStream = clientSocket.getInputStream();
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
-                PrintWriter out = new PrintWriter(outputStream, true);
-                String readData = null;
-                String output;
-                while((readData = in.readLine()) != null) {
-                    System.out.println(readData);
-                }
-
-                for(String line : RSP_LINES){
-                    out.write(line);
-                }
-                out.flush();
+        Socket socket = srvSocket.accept();
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        String s;
+        // this is a test code which just reads in everything the requester sends
+        while ((s = in.readLine()) != null)
+        {
+            System.out.println(s);
+            if (s != null && s.length() == 0)
+            {
+                break;
             }
-
-
         }
-        catch (Exception e) {
-            LOG.log(Level.INFO, e.getMessage());
-        }
+        // send the response to close the tab/window
+        String response = "<html><head>Hello from plain socket</head><body>Hi Hi<body></html>\\r\\n";
 
-        //listen for connection on port 80
+        PrintWriter out = new PrintWriter(socket.getOutputStream());
+        out.println("HTTP/1.1 200 OK");
+        out.println("Content-Type: text/html");
+        out.println("Content-Length: " + response.length());
+        out.println();
+        out.println(response);
+        out.flush();
+        out.close();
+        socket.close();
 
 
     }
-
-
-
 }

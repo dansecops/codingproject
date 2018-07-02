@@ -1,3 +1,5 @@
+import org.apache.commons.io.IOUtils;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -29,21 +31,21 @@ public class PlainSockets {
 
                 OutputStream outputStream = clientSocket.getOutputStream();
                 InputStream inputStream = clientSocket.getInputStream();
-
-                BufferedReader in = new BufferedReader(new InputStreamReader(inputStream));
                 PrintWriter out = new PrintWriter(outputStream, true);
-                String readData = null;
-                do {
-                    readData = in.readLine();
-                    LOG.info(readData);
-                } while (readData != null);
+                int dataSize = inputStream.available();
+                byte[] data = new byte[dataSize];
+                inputStream.read(data);
+                //List<String> strings = IOUtils.readLines(inputStream);
+                //strings.forEach(System.out::println);
 
                 for(String line : RSP_LINES){
                     out.write(line);
                 }
-                out.flush();
-            }
 
+                inputStream.close();
+                outputStream.close();
+
+            }
 
         }
         catch (Exception e) {

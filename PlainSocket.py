@@ -27,7 +27,7 @@ while True:
 
     try:
         response_header = 'HTTP/1.1 200 OK\nContent-Type: text/html\n\n'
-        response_body = '<html><body>Hello World</body></html>'.encode('utf-8')
+        response_body = '<html><body><center><h3>Hello World</h3></center></body></html>'.encode('utf-8')
 
     except Exception as e:
         response_header = 'HTTP/1.1 404 Not Found\n\n'

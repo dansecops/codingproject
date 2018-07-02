@@ -1,4 +1,4 @@
-package mrbeans;
+package model;
 
 import com.datastax.driver.mapping.annotations.Column;
 import com.datastax.driver.mapping.annotations.PartitionKey;
@@ -50,5 +50,9 @@ public class DBUser {
 
     public String getUserid() {
         return userid;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
